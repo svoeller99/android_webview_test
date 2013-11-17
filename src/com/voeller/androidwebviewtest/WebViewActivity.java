@@ -2,6 +2,8 @@ package com.voeller.androidwebviewtest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -65,10 +67,10 @@ public class WebViewActivity extends Activity {
 			URL url = new URL(newUrl);
 			String hash = url.getRef();
 			Log.i(TAG, "onHashChanged - hash: " + hash);
-			
-			String[] hashParts = hash.split(":");
-			String command = hashParts[0];
-			String extraData = (hashParts.length>1) ? hashParts[1] : null;
+
+			Map<String,String> hashParts = parseHash(hash);
+			String command = hashParts.get("action");
+			String extraData = hashParts.get("result");
 			
 			if("done".equals(command)) {
 				Intent returnIntent = new Intent();
@@ -79,6 +81,20 @@ public class WebViewActivity extends Activity {
 		} catch (MalformedURLException e) {
 			Log.e(TAG, "bad url received: " + newUrl);
 		}
+	}
+	
+	private Map<String,String> parseHash(String hash) {
+		Map<String,String> result = new HashMap<String,String>();
+		
+		if(hash==null) return result;
+		String[] hashParts = hash.split("&");
+		for(String hashPart : hashParts) {
+			String[] keyVal = hashPart.split("=");
+			String key = keyVal[0];
+			String val = (keyVal.length>1) ? keyVal[1] : null;
+			result.put(key, val);
+		}
+		return result;
 	}
 
 	@Override
