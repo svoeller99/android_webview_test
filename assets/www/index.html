@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <script type="text/javascript">
+      (function(global){
+        var document = global.document;
+      
+        window.addEventListener("load", onLoad, false);
+        window.addEventListener("hashchange", onHashChange, false);
+        
+        function onLoad() {
+          print('loaded - location is ' + window.location.toString());
+        }
+        
+        function onHashChange(e) {
+          print(['hash changed - new URL:', e.newURL]);
+        }
+        
+        function print(stuff) {
+          var outputDiv = document.getElementById('outputHere');
+            
+          console.log(stuff);
+          outputDiv.innerHTML = stuff + "<br /><br />" + outputDiv.innerHTML
+        }
+        
+        global.clearStuff = function(){
+          document.getElementById('outputHere').innerText='';
+        }
+        
+        global.someInterface = {
+          someFunction : function() {
+            var args = Array.prototype.slice.call(arguments, 0);
+            var stuff = ["someFunction called with args: ", args];
+            print(stuff);
+          }
+        }
+      }(this));
+    </script>
+  </head>
+  <body>
+    <a href="#foo">foo</a><br/>
+    <a href="#bar">bar</a><br/>
+    <a href="#baz">baz</a><br />
+    
+    <a href="#done">done - no param</a><br />
+    <a href="#done:123">done - has param</a>
+    
+    <div style="border: 1px solid black;margin-top:15px;padding:5px;width:50%;">
+      <button onclick="clearStuff();">clear</button>
+      <button onclick="someInterface.someFunction('foo', 'bar', 123, true);">test exposed function</button>
+      <button onclick="alert('sanity check');">sanity check</button>
+      <div id="outputHere" style="margin:10px 0 0 5px;"></div>
+    </div>
+    
+  </body>
+</html>
