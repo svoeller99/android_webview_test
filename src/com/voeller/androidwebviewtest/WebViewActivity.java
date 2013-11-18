@@ -17,7 +17,7 @@ import android.webkit.WebViewClient;
 import com.voeller.androidwebviewtest.bridge.WebViewInterface;
 
 public class WebViewActivity extends Activity {
-	private static final String TAG = "MainActivity";
+	private static final String TAG = "WebViewActivity";
 	
 	public static final String WEBVIEW_INPUT = "WebViewInput";
 	public static final String WEBVIEW_OUTPUT = "WebViewOutput";
